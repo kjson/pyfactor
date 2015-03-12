@@ -1,5 +1,6 @@
 import math
 import random 
+from fractions import gcd
 
 
 def base_coeffs(b,N):
@@ -13,7 +14,6 @@ def base_coeffs(b,N):
 	return coeffs
 
 def is_probable_prime(n):
-
     """ Miller-Rabin primality test """
 
     assert n >= 2
@@ -54,7 +54,7 @@ def is_probable_prime(n):
     return True # no base tested showed n as composite
 
 def primes_less_than(N):
-    """ Find all primes less than a given bound """ 
+    """ Find all primes less than N """ 
         
     sieve = [True] * N
 
@@ -72,10 +72,15 @@ def is_irreducible(f):
 def roots_mod_p(f,p):
     """ Find all roots of a monic irreducible polynomial using Chiens Search  """ 
 
-    # find primiteve root of p 
+    pass 
 
-    phi_factors = easy_factor(p-1)
+def primitive_root(p):
+    """ The first primitive root of p """
 
+    # prime factors of p-1 
+    phi_factors = lazy_factors(p-1)
+
+    # test if a has order less than p-1 
     for a in xrange(2,p):
 
         primitive = True  
@@ -87,69 +92,68 @@ def roots_mod_p(f,p):
         if primitive:
             return a
 
+def lazy_factors(N):    
+    """ Simple factoring meth for small integers """
+    return set(reduce(list.__add__, 
+                ([i, N//i] for i in range(1, int(N**0.5) + 1) if N % i == 0)))
 
-def easy_factor(N):
 
-    """ Dirty Lenstras EC factoring algorithm """
+def lenstra_elliptic_curve_factor(N):
+    """ Lenstra's elliptic curve factoring method """
 
-    x_0 = random.randrange(2, N)
-    y_0 = random.randrange(2, N)
+    # Base case 
+    if N == 1:
+        return []
 
+    # Cant factor a prime! 
+    if N == 2 or is_probable_prime(N):
+        return [N]
+
+    # Initialize two random integers mod N 
+    x0, y0 = random.randrange(1, N), random.randrange(1, N)
+    factors = list() 
     bound = int(math.sqrt(N))
 
-    def extended_gcd(aa, bb):
-        lastremainder, remainder = abs(aa), abs(bb)
-        x, lastx, y, lasty = 0, 1, 1, 0
-        while remainder:
-            lastremainder, (quotient, remainder) = remainder, divmod(lastremainder, remainder)
-            x, lastx = lastx - quotient*x, x
-            y, lasty = lasty - quotient*y, y
-        return lastremainder, lastx * (-1 if aa < 0 else 1), lasty * (-1 if bb < 0 else 1)
-
-    def modInv(a, m):
-        g, x, y = extended_gcd(a, m)
-        return g,x % m 
-
-    def add(a,N,(x1,y1),(x2,y2)):
-
-        if x1 != x2:  
-            d, x = modInv(x1 - x2,N) 
-            if d != 1:
-                return d, (1,1)
-
-            s = (y1 - y2) * x
-
-        else:
-            s = (3*x1**2 + a) * modInv(2*y1,N) 
-
-        x3 = s**2 - x1 - x2 
-        y3 = - y1 + s * (x3 - x1)
-
-        return 1,(x3 % p,y3 % N)
-
-    def scale(a,N,num,(x1,x2)):
-        if num % 2 == 0:
-            return scale(a,N,num / 2, add(a,N,(x1,x2),(x1,x2)))
-        else:
-            return add(a,N,(x1,x2), scale(a,N,num - 1,(x1,x2)))
-        
     for a in xrange(2,N):
-        b = y_0**2 - x_0**3 - a*x_0
+        # Build curve our of random points
+        b = y0**2 - x0**3 - a*x0
 
+        # Check curve is not singular 
         if 4*a**3 - 27*b**2 ==0:
-            continue
+            next 
 
+        # Initially double point 
+        s = (3*x0**2 + a) 
+        (x,y) = (s**2 - 2*x0, s*((s**2 - 2*x0) - x0) - y0)
+
+        # Keep adding points until gcd(x-x0,N) != 1
         for k in xrange(2,bound):
-            if scale(a,N,k,(x_0,y_0))[0] != 1:
-                if gcd(N,scale(a,N,k,(x_0,y_0))[1]) != 1:
-                    return gcd(N,scal(a,N,k,(x_0,y_0))[1])
+            for i in xrange(0,math.factorial(k)):
+                d = gcd(x- x0,N)
+                if d != 1:
+                    return [d] + lenstra_elliptic_curve_factor(N/d)
+                else:
+                    s = (y - y0) * modinv(x - x0,N)
+                    x = s**2 - x - x0  
+                    y = - y + s * (s**2 - x - x0 - x)
 
 
-
-roots_mod_p(3,32)
-
-
-
+def extended_gcd(aa, bb):
+    """ Extended Euclidean algorithm """
+    lastremainder, remainder = abs(aa), abs(bb)
+    x, lastx, y, lasty = 0, 1, 1, 0
+    while remainder:
+        lastremainder, (quotient, remainder) = remainder, divmod(lastremainder, remainder)
+        x, lastx = lastx - quotient*x, x
+        y, lasty = lasty - quotient*y, y
+    return lastremainder, lastx * (-1 if aa < 0 else 1), lasty * (-1 if bb < 0 else 1)
+ 
+def modinv(a, m):
+    """ Modular inverse of a """
+    g, x, y = extended_gcd(a, m)
+    if g != 1:
+        raise ValueError
+    return x % m
 
 
 	
