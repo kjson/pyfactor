@@ -4,18 +4,13 @@ import math
 import numpy 
 from util import *
 
-
 """
 PS1=$'\e[0;31m$ \e[0m'
 """
 
-
-
 def free_parameters(N): 
     """ Returns free parameters used in GNFS """
-
     # bitlength of N 
-    
     k = math.log(N,2) 
     
     if k >= 110: d = 5.0
@@ -41,9 +36,7 @@ def free_parameters(N):
 
 def algebraic_factor_base(f,bound):
 	""" The algebraic for bases in Z[r] where r is a root of f """
-
 	aBase = list()
-
 	assert bound > 2 
 
 	for p in primes_less_than(bound):
@@ -55,7 +48,6 @@ def algebraic_factor_base(f,bound):
 
 def quadratic_character_base(f,l,u):
 	""" The quadratic character base of f with primes between l and u """
-
 	qBase = list()
 
 	for p in xrange(l,u):
@@ -65,7 +57,6 @@ def quadratic_character_base(f,l,u):
 					qBase.append((r,p))
 
 	return qBase 
-
 
 def sieve(rBase,aBase,theta,m,b,a):
 	""" select m smooth algebraic integers in Z[r] where r is a root of f"""
@@ -78,10 +69,8 @@ def difference_of_squares(smooth_list,N,f):
 
 def gnfs(N):
 	""" Factor given integer N """
-        
-
-        # Select free f, m parameters depending on N 
-       	f, m = free_parameters(N)
+    # Select free f, m parameters depending on N 
+   	f, m = free_parameters(N)
 
 	# Find rational, algebraic and quadratic factor bases
 	rBase = primes_less_than(m)
@@ -91,8 +80,6 @@ def gnfs(N):
 	l = len(rBase) + len(aBase) + len(qBase)
 
 
-
-gnfs(34823647236)
 
 
 
