@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+
+# TODO: 
+# - Fix bugs in factor
+# - Test Chiens vs Factoring method 
+# - Miller rabin irreduciblity 
+# - Fix lenstra, 1 million or less... 
+
 import math
 import random 
 from fractions import gcd
@@ -6,11 +14,69 @@ from sympy import *
 """ 
 Many methods for the general number field sieve 
 
-Worklist 
-
-http://en.wikipedia.org/wiki/Factorization_of_polynomials_over_finite_fields
-
 """
+
+def extended_gcd(aa, bb):
+    """ Extended Euclidean algorithm """
+    lastremainder, remainder = abs(aa), abs(bb)
+    x, lastx, y, lasty = 0, 1, 1, 0
+
+    while remainder:
+        lastremainder, (quotient, remainder) = remainder, divmod(lastremainder, remainder)
+        x, lastx = lastx - quotient*x, x
+        y, lasty = lasty - quotient*y, y
+
+    return lastremainder, lastx * (-1 if aa < 0 else 1), lasty * (-1 if bb < 0 else 1)
+ 
+
+def modinv(a, m):
+    """ Modular inverse of a modulo m """
+    g, x, y = extended_gcd(a, m)
+    if g != 1:
+        raise ValueError
+
+    return x % m
+
+def is_probable_prime(N):
+    """ Miller-Rabin primality test on an integer N """
+    assert N >= 2
+    # special case 2
+    if N == 2:
+        return True
+    # ensure N is odd
+    if N % 2 == 0:
+        return False
+    # write N-1 as 2**s * d
+    # repeatedly try to divide N-1 by 2
+    s = 0
+    d = N-1
+    while True:
+        quotient, remainder = divmod(d, 2)
+        if remainder == 1:
+            break
+        s += 1
+        d = quotient
+    assert(2**s * d == N-1)
+
+    # This needs to be set, but 10 corresponds to false possitive probablility = 1/2**10
+    _mrpt_num_trials = 10 
+ 
+    # test the base a to see whether it is a witness for the compositeness of N
+    def try_composite(a):
+        if a**d % N == 1:
+            return False
+        for i in range(s):
+            if a**(2**i*d) % N == N-1:
+                return False
+        return True # N is definitely composite
+ 
+    for i in range(_mrpt_num_trials):
+        a = random.randrange(2, N)
+        if try_composite(a):
+            return False
+ 
+    return True # no base tested showed N as composite
+
 
 def lenstra_elliptic_curve_factor(N):
     """ Lenstra's elliptic curve factoring method """
@@ -51,6 +117,7 @@ def lenstra_elliptic_curve_factor(N):
                     x = s**2 - x - x0  
                     y = - y + s * (s**2 - x - x0 - x)
 
+
 def base_coeffs(b,N):
 	""" Returns coefficients of N to the base b """
 	coeffs = list()
@@ -61,9 +128,9 @@ def base_coeffs(b,N):
 
 	return coeffs
 
-def is_probable_prime(N):
-    """ Miller-Rabin primality test """
 
+def is_probable_prime(N):
+    """ Miller-Rabin primality test on an integer N """
     assert N >= 2
     # special case 2
     if N == 2:
@@ -83,6 +150,7 @@ def is_probable_prime(N):
         d = quotient
     assert(2**s * d == N-1)
 
+    # This needs to be set, but 10 corresponds to false possitive probablility = 1/2**10
     _mrpt_num_trials = 10 
  
     # test the base a to see whether it is a witness for the compositeness of N
@@ -101,6 +169,7 @@ def is_probable_prime(N):
  
     return True # no base tested showed N as composite
 
+
 def primes_less_than(N):
     """ Find all primes less than N """ 
     sieve = [True] * N
@@ -111,15 +180,11 @@ def primes_less_than(N):
 
     return [2] + [i for i in xrange(3,N,2) if sieve[i]]
 
-def is_irreducible(f):
-    """ Checks whether f is irreducible over the integers """
 
 def Chien_Search(f,p):
     """ 
-
     Chien's search for roots of f mod p:
     http://en.wikipedia.org/wiki/Chien_search
-    
     """ 
 
     # to represent roots in terms of primitive element 
@@ -142,11 +207,37 @@ def Chien_Search(f,p):
 
     return roots       
 
+
+def rand_poly(p,n):
+    """ Random polynomial with degree n and coefficients in finite field Z_q """
+
+    # Set degree of random polynomial 
+    d = random.randrange(1, n)
+
+    # Indeterminant variable x 
+    x = symbols('x')
+
+    # zero polynomial in F_p[x]
+    f = poly(0,x,modulus=p)
+
+    for i in xrange(0,d):
+        a = random.randrange(0, p)
+        f = poly(f+ a*x**i,x,modulus=p) 
+
+    return f 
+
+
 def square_free_factorization(f,p):
-    """ The sqaure free factorizaiton of f mod p """
+    """ The square free factorizaiton of f mod p """
+
+    # Initial variables
     i = 1
     r = 1 
-    g = f 
+    g = diff(f) # Derivative of f wrt x 
+
+    # Alias square_free_factorization 
+    F = square_free_factorization
+
     if g != 0:
         c = gcd(f,g)
         w = f / c 
@@ -157,29 +248,33 @@ def square_free_factorization(f,p):
             i += 1 
             w = y 
             c = c/y 
-        if c != 1: 
+        if c!=1: 
             c = c**(1/p)
-            return r*square_free_factorization(c,p)**p 
+            return r*F(c,p)**p 
         else:
             return r 
     else:
         f = f**(1/p)
-        return square_free_factorization(f,p)**p 
+        return F(f,p)**p 
 
-def distinct_degree_factorization(f):
+
+def distinct_degree_factorization(f,p):
     """ 
-
     Finds all pairs (g, d), such that 
-    f has an irreducible factor of degree d and
-    g is the product of all monic irreducible factors of f of degree d. 
+        -f has an irreducible factor of degree d and
+        -g is the product of all monic irreducible factors of f of degree d. 
 
     """
 
+    # Initial variables 
     i = 1 
     S = []
     ff = f
 
-    while degree(ff) >= 2i:
+    # Indeterminant variable x 
+    x = symbols('x')
+
+    while degree(ff) >= 2*i:
         g = gcd(ff,x**(p*i) - x)
         if g != 1:
             S.append((g,i))
@@ -192,6 +287,50 @@ def distinct_degree_factorization(f):
         return [(f,1)]
     else:
         return S 
+
+
+def cantor_zassenhaus_algorithm(f,p,d):
+    """ 
+    Cantor-Zassenhaus's algorithm for finding 
+    the set of monic irreducible factors of f
+    """
+
+    Factors = [f]
+    n = degree(f)
+    r = n / d 
+
+    while len(Factors) < r:
+        h = rand_poly(p,n - 1)
+        g = reduce(h ** ((p**d - 1)/2) - 1, [f])
+        for u in [x for x in Factors if degree(x) > d]:
+            if gcd(g,u) != 1 and gcd(g,u) != u:
+                Factors = Factors.remove(u) + [gcd(gcd(g,u),u/gcd(g,u))]
+
+    return Factors
+
+def factor(f,p):
+    """ Factor univariate polynomial in a finite field of order p """
+
+    # list of factors to return
+    Factors = list()
+
+    # f must be monic 
+    assert f.coeffs()[degree(f)-1] == 1 
+
+    # Square free factorization of f
+    f1 = square_free_factorization(f,p)  
+
+    # all pairs (g,d) satisfying 
+    # f has an irreducible factor of degree d and
+    # g is the product of all monic irreducible factors of f of degree d.
+    G = distinct_degree_factorization(f1,p)
+
+    # The set of monic irreducible factors of f
+    for (g,d) in G:
+        Factors += cantor_zassenhaus_algorithm(f,p,d) 
+
+    return Factors 
+
 
 def primitive_root(p):
     """ The first primitive root of p """
@@ -208,30 +347,11 @@ def primitive_root(p):
         if primitive:
             return a
 
+
 def lazy_factors(N):    
     """ Simple factoring meth for small integers """
     return set(reduce(list.__add__, 
                 ([i, N//i] for i in range(1, int(N**0.5) + 1) if N % i == 0)))
-
-def extended_gcd(aa, bb):
-    """ Extended Euclidean algorithm """
-    lastremainder, remainder = abs(aa), abs(bb)
-    x, lastx, y, lasty = 0, 1, 1, 0
-
-    while remainder:
-        lastremainder, (quotient, remainder) = remainder, divmod(lastremainder, remainder)
-        x, lastx = lastx - quotient*x, x
-        y, lasty = lasty - quotient*y, y
-
-    return lastremainder, lastx * (-1 if aa < 0 else 1), lasty * (-1 if bb < 0 else 1)
- 
-def modinv(a, m):
-    """ Modular inverse of a modulo m """
-    g, x, y = extended_gcd(a, m)
-    if g != 1:
-        raise ValueError
-
-    return x % m
 
 
 	

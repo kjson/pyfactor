@@ -4,9 +4,7 @@ import math
 import numpy 
 from util import *
 
-"""
-PS1=$'\e[0;31m$ \e[0m'
-"""
+""" The General number field sieve """
 
 def free_parameters(N): 
     """ Returns free parameters used in GNFS """
