@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 # TODO: 
-# - Fix bugs in factor
 # - Test Chiens vs Factoring method 
 # - Miller rabin irreduciblity 
 # - Fix lenstra, 1 million or less... 
@@ -10,10 +9,10 @@ import math
 import random 
 from fractions import gcd
 from sympy import * 
+import time 
 
 """ 
 Many methods for the general number field sieve 
-
 """
 
 def extended_gcd(aa, bb):
@@ -27,7 +26,7 @@ def extended_gcd(aa, bb):
         y, lasty = lasty - quotient*y, y
 
     return lastremainder, lastx * (-1 if aa < 0 else 1), lasty * (-1 if bb < 0 else 1)
- 
+
 
 def modinv(a, m):
     """ Modular inverse of a modulo m """
@@ -233,7 +232,7 @@ def square_free_factorization(f,p):
     # Initial variables
     i = 1
     r = 1 
-    g = diff(f) # Derivative of f wrt x 
+    g = diff(f,x, modulus=p) # Derivative of f wrt x 
 
     # Alias square_free_factorization 
     F = square_free_factorization
@@ -263,7 +262,6 @@ def distinct_degree_factorization(f,p):
     Finds all pairs (g, d), such that 
         -f has an irreducible factor of degree d and
         -g is the product of all monic irreducible factors of f of degree d. 
-
     """
 
     # Initial variables 
@@ -301,12 +299,13 @@ def cantor_zassenhaus_algorithm(f,p,d):
 
     while len(Factors) < r:
         h = rand_poly(p,n - 1)
-        g = reduce(h ** ((p**d - 1)/2) - 1, [f])
+        g = reduced(h ** ((p**d - 1)/2) - 1, [f])[1]
         for u in [x for x in Factors if degree(x) > d]:
             if gcd(g,u) != 1 and gcd(g,u) != u:
                 Factors = Factors.remove(u) + [gcd(gcd(g,u),u/gcd(g,u))]
 
     return Factors
+
 
 def factor(f,p):
     """ Factor univariate polynomial in a finite field of order p """
@@ -315,8 +314,8 @@ def factor(f,p):
     Factors = list()
 
     # f must be monic 
-    assert f.coeffs()[degree(f)-1] == 1 
-
+    assert f.coeffs()[0] == 1 
+    print f 
     # Square free factorization of f
     f1 = square_free_factorization(f,p)  
 
@@ -348,10 +347,3 @@ def primitive_root(p):
             return a
 
 
-def lazy_factors(N):    
-    """ Simple factoring meth for small integers """
-    return set(reduce(list.__add__, 
-                ([i, N//i] for i in range(1, int(N**0.5) + 1) if N % i == 0)))
-
-
-	
