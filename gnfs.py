@@ -43,29 +43,31 @@ def free_parameters(N):
 
 	return f, m
 
-	# Need speed up with roots mod p
+
 def algebraic_factor_base(f,bound):
 	""" Calculates algebraic factor base up to a given bound """
+
 	aBase = list()
-	assert bound > 2 
+	bound = 3*m 
 
 	for p in primes_less_than(bound):
-		for r in xrange(0,p):
-			if f.eval(r) % p == 0:
-				aBase.append((r,p))
+		for r in factor(f,p):
+			aBase.append((r,p))
 
 	return aBase 
 
-	# Need speed up with roots mod p
+
 def quadratic_character_base(f,l,u):
 	""" The quadratic character base of f with primes between l and u """
 	qBase = list()
 
-	for p in xrange(l,u):
+	lower = 3*m 
+	upper = 4*m 
+
+	for p in xrange(lower,upper):
 		if is_probable_prime(p):
-			for r in xrange(0,p):
-				if f.eval(r) % p == 0:
-					qBase.append((r,p))
+			for r in factor(f,p):
+				qBase.append((r,p))
 
 	return qBase 
 
@@ -100,8 +102,6 @@ def sieve(rBase,aBase,qBase,f,m):
 
 	# Matrix of all smooth pairs
 	U = np.zeros(shape=(lt+1,lt))
-
-	print U
 
 	# Sieve with rational factor base 
 	for p in rBase:
@@ -153,16 +153,14 @@ def gnfs(N):
     # Should also determine the number of integers to sieve: M
 	f, m = free_parameters(N)
 
+
 	# Find rational, algebraic and quadratic factor bases
-	rBase = primes_less_than(m)
+	# rBase = primes_less_than(m)
+
 	# aBase = algebraic_factor_base(f,m)  
 	# qBase = quadratic_character_base(f,m) 
 
-	sieve(rBase,[],[],f,m)
-
-
-
-
+	# sieve(rBase,[],[],f,m)
 
 
 

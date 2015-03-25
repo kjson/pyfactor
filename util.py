@@ -90,16 +90,20 @@ def lenstra_elliptic_curve_factor(N):
 
     # Initialize two random integers mod N 
     x0, y0 = random.randrange(1, N), random.randrange(1, N)
+
+    # List of factors to be returned 
     factors = list() 
+
+    # 
     bound = int(math.sqrt(N))
 
     for a in xrange(2,N):
-        # Build curve our of random points
+        # Build curve out of random points
         b = y0**2 - x0**3 - a*x0
 
         # Check curve is not singular 
         if 4*a**3 - 27*b**2 ==0:
-            next 
+            next
 
         # Initially double point 
         s = (3*x0**2 + a) 
@@ -128,47 +132,6 @@ def base_coeffs(b,N):
 	return coeffs
 
 
-def is_probable_prime(N):
-    """ Miller-Rabin primality test on an integer N """
-    assert N >= 2
-    # special case 2
-    if N == 2:
-        return True
-    # ensure N is odd
-    if N % 2 == 0:
-        return False
-    # write N-1 as 2**s * d
-    # repeatedly try to divide N-1 by 2
-    s = 0
-    d = N-1
-    while True:
-        quotient, remainder = divmod(d, 2)
-        if remainder == 1:
-            break
-        s += 1
-        d = quotient
-    assert(2**s * d == N-1)
-
-    # This needs to be set, but 10 corresponds to false possitive probablility = 1/2**10
-    _mrpt_num_trials = 10 
- 
-    # test the base a to see whether it is a witness for the compositeness of N
-    def try_composite(a):
-        if pow(a, d, N) == 1:
-            return False
-        for i in range(s):
-            if pow(a, 2**i * d, N) == n-1:
-                return False
-        return True # N is definitely composite
- 
-    for i in range(_mrpt_num_trials):
-        a = random.randrange(2, N)
-        if try_composite(a):
-            return False
- 
-    return True # no base tested showed N as composite
-
-
 def primes_less_than(N):
     """ Find all primes less than N """ 
     sieve = [True] * N
@@ -178,33 +141,6 @@ def primes_less_than(N):
             sieve[i*i::2*i]=[False]*((N-i*i-1)/(2*i)+1)
 
     return [2] + [i for i in xrange(3,N,2) if sieve[i]]
-
-
-def Chien_Search(f,p):
-    """ 
-    Chien's search for roots of f mod p:
-    http://en.wikipedia.org/wiki/Chien_search
-    """ 
-
-    # to represent roots in terms of primitive element 
-    a = primitive_root(p)
-    coefficients = f.coeffs()
-    A = coefficients[::-1]
-    roots = list()
-
-    if f.eval(0) % p == 0:
-        roots.append(0)
-
-    if sum(A) % p ==0: 
-        roots.append(1)
-
-    for i in xrange(0,p-1): 
-        for j in xrange(1,len(coefficients)):
-            A[j] = A[j]*a**i 
-        if sum(A) % p == 0:
-            roots.append(a**i % p)
-
-    return roots       
 
 
 def rand_poly(p,n):
@@ -232,7 +168,7 @@ def square_free_factorization(f,p):
     # Initial variables
     i = 1
     r = 1 
-    g = diff(f,x, modulus=p) # Derivative of f wrt x 
+    g = diff(f,x) # Derivative of f wrt x 
 
     # Alias square_free_factorization 
     F = square_free_factorization
@@ -306,7 +242,6 @@ def cantor_zassenhaus_algorithm(f,p,d):
 
     return Factors
 
-
 def factor(f,p):
     """ Factor univariate polynomial in a finite field of order p """
 
@@ -319,31 +254,20 @@ def factor(f,p):
     # Square free factorization of f
     f1 = square_free_factorization(f,p)  
 
+    print f1 
+
     # all pairs (g,d) satisfying 
     # f has an irreducible factor of degree d and
     # g is the product of all monic irreducible factors of f of degree d.
     G = distinct_degree_factorization(f1,p)
 
-    # The set of monic irreducible factors of f
+
+    # # The set of monic irreducible factors of f
     for (g,d) in G:
         Factors += cantor_zassenhaus_algorithm(f,p,d) 
 
     return Factors 
 
 
-def primitive_root(p):
-    """ The first primitive root of p """
-
-    # prime factors of p-1 
-    phi_factors = lazy_factors(p-1)
-
-    # test if a has order less than p-1 
-    for a in xrange(2,p):
-        primitive = True  
-        for l in phi_factors:
-            if a**((p-1)/l) % p == 1:
-                primitive = False 
-        if primitive:
-            return a
 
 
