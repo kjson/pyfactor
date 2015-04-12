@@ -1,0 +1,46 @@
+\begin{definition} \label{dedekind} %(\textit{Dedekind Domain})
+
+  \end{definition}
+
+  \begin{definition} \label{field} %(\textit{Field})
+    A \emph{field} $F$ is a \hyperref[ring]{ring} satifying the following extra conditions
+    \begin{enumerate}
+      \item If $0,1$ are the respective additive and multiplicative identities of $F$, then $1 \neq 0$
+      \item If $a,b \in F$, then $a\cdot b = b \cdot a$ 
+      \item For all $a \in F \backslash \lbrace 0 \rbrace $ there exists $b \in F \backslash \lbrace 0 \rbrace $ such that $ab = ba = 1$
+    \end{enumerate}
+  \end{definition}
+
+  \begin{theorem} \label{fun} (\textit{Fundamental Theorem of Algebra})
+    Let $f \in \mathbb{C}[Z]$ be a non-constant polynomial.  Then there is a $z\in\mathbb{C}$ with $f(z)=0$.
+  \end{theorem}
+  \begin{proof}
+    Let C be the finite set of critical points of $f$. C is finite by elementary algebra. Remove from the codomain f(C) (and call the resulting open set B) and from the domain its inverse image (again finite) (and call the resulting open set A). Now you get an open map from A to B, which is also closed, because any polynomial is proper (inverse images of compact sets are compact). But B is connected and so $f$ is surjective.
+  \end{proof}
+
+  \begin{definition} \label{ideal} %(\textit{Ideal})
+    An \emph{ideal} of a \hyperref[ring]{ring} $R$ is non-empty subset satisfying: 
+    \begin{enumerate}
+      \item If $x,y \in I$, then $x - y \in I$ 
+      \item For all $r \in R$ and $x \in I$, both $rx,xr \in I$
+    \end{enumerate}
+  \end{definition}
+
+  \begin{definition} \label{primeideal}% (\textit{Prime Ideal})
+    An \hyperref[ideal]{ideal} $\mathfrak{p}$ of a \hyperref[ring]{ring} $R$ is \emph{prime} if:
+    \begin{enumerate}
+      \item For all $a,b \in R$, if $ab \in \mathfrak{p}$, then $a \in \mathfrak{p}$ or $b \in \mathfrak{p}$
+      \item $\mathfrak{p}$ does not eqaul the whole ring $R$
+    \end{enumerate}
+  \end{definition}
+
+  \begin{definition} \label{ring} %(\textit{Ring})
+    A \emph{ring} is a set $R$ together with two binary operations, denoted $+: R \times R \longrightarrow R$ and $\cdot: R \times R \longrightarrow R$, such that
+    \begin{enumerate}
+      \item $(a+b)+c = a+(b+c)$ and $(a \cdot b) \cdot c = a \cdot (b \cdot c)$ for all $a,b,c \in R$ (associative law)
+      \item $a+b = b+a$ for all $a,b \in R$ (commutative law)
+      \item There exists elements $0,1 \in R$ such that $a+0 = 0 + a = a $ and $a\cdot1 = 1 \cdot a = a $ for all $a \in R$ (additive and multiplicative identities)
+      \item For all $a \in R$, there exists $b \in R$ such that $a+b = 0$ (additive inverse)
+      \item $a\cdot(b+c) = (a \cdot b) + (a \cdot c)$ and $(a+b) \cdot c = (a \cdot c) + (b \cdot c)$ for all $a,b,c \in R$ (distributive law)
+    \end{enumerate}
+  \end{definition}
