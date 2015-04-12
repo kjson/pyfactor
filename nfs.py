@@ -108,91 +108,100 @@ def irreducible(f):
     return True 
 
 
-# def nfs(N):
-#     """ Factors N into list of primes with repitition 
-#     TODO:
-#     -- Sieve and fill in the array.
-#     """
+def nfs(N):
+    """ Factors N into list of primes with repitition 
+    TODO:
+    -- Sieve and fill in the array.
+    """
 
-#     # Don't waste time
-#     if is_probable_prime(N):
-#         return [N]
+    # Don't waste time
+    if is_probable_prime(N):
+        return [N]
 
-#     # bitlength of N
-#     k = math.log(N, 2)
-#     if k >= 110:
-#         d = 5.0
-#     elif 80 < k < 110:
-#         d = 4.0
-#     else:
-#         d = 3.0
+    # bitlength of N
+    k = math.log(N, 2)
+    if k >= 110:
+        d = 5.0
+    elif 80 < k < 110:
+        d = 4.0
+    else:
+        d = 3.0
 
-#     while True:
-#         i = 0
-#         # Calc m such that m^d = N
-#         m = int(math.floor(N ** (1 / d))) + i
+    while True:
+        i = 0
+        # Calc m such that m^d = N
+        m = int(math.floor(N ** (1 / d))) + i
 
-#         # Coefficients in base-m rep of N
-#         coeffs = base_coeffs(m, N)
+        # Coefficients in base-m rep of N
+        coeffs = base_coeffs(m, N)
 
-#         # Create polynomial
-#         x = symbols('x')
-#         f = poly(x, domain=ZZ) - x
-#         for i in xrange(0, len(coeffs)):
-#             f += coeffs[i] * x ** i
+        # Create polynomial
+        x = symbols('x')
+        f = poly(x, domain=ZZ) - x
+        for i in xrange(0, len(coeffs)):
+            f += coeffs[i] * x ** i
 
-#         if irreducible(f):
-#             break
+        if irreducible(f):
+            break
 
-#     # Factor bases for sieving
-#     rational = primes_less_than(m)
-#     algebraic = list()
-#     quadratic = list()
+    # Factor bases for sieving
+    rational = primes_less_than(m)
+    algebraic = list()
+    quadratic = list()
 
-#     for p in primes_less_than(3 * m):
-#         for r in ground_roots(f, modulus=p):
-#             algebraic.append((r, p))
-#     for p in xrange(3 * m, 4 * m):
-#         if is_probable_prime(p):
-#             for r in ground_roots(f, modulus=p):
-#                 quadratic.append((r, p))
+    for p in primes_less_than(3 * m):
+        for r in ground_roots(f, modulus=p):
+            algebraic.append((r, p))
+    for p in xrange(3 * m, 4 * m):
+        if is_probable_prime(p):
+            for r in ground_roots(f, modulus=p):
+                quadratic.append((r, p))
 
-#     # Number of entries to check
-#     M = 1000
+    # Number of entries to check
+    M = 1000
 
-#     # Random starting value
-#     b = random.randrange(1, m)
+    # Random starting value
+    b = random.randrange(1, m)
 
-#     # List of M "soil" integers
-#     S = [(a, b) for a in xrange(0, M)]
+    # List of M "soil" integers
+    S = [(a, b) for a in xrange(0, M)]
 
-#     # Lists to keep track of smooth pairs
-#     R = [[] for _ in S]
-#     A = [[] for _ in S]
+    # Lists to keep track of smooth pairs
+    R = [[] for _ in S]
+    A = [[] for _ in S]
 
-#     # Matrix of all smooth pairs
-#     U = np.zeros(shape=(len(rational)+len(algebraic)+len(quadratic)+2,len(rational)+len(algebraic)+len(quadratic)+1))
+    # Matrix of all smooth pairs
+    U = np.zeros(shape=(len(rational)+len(algebraic)+len(quadratic)+2,len(rational)+len(algebraic)+len(quadratic)+1))
 
-#     # Sieve with rational factor base
-#     for p in rational:
-#         i = 0
-#         bm = b * m % p
-#         while S[i][0] != bm:
-#             i += 1
-#         for j in xrange(i, M, p):
-#             l = 1
-#             while (S[i][0] + S[i][1] * m) % p ** (l + 1) == 0:
-#                 l += 1
-#             R[j].append((p, l))
+    # Sieve with rational factor base
+    for p in rational:
+        i = 0
+        bm = b * m % p
+        while S[i][0] != bm:
+            i += 1
+        for j in xrange(i, M, p):
+            l = 1
+            while (S[i][0] + S[i][1] * m) % p ** (l + 1) == 0:
+                l += 1
+            R[j].append((p, l))
 
-#     # Sieve with algebraic factor base
-#     for (r, q) in algebraic:
-#         i = 0
-#         br = b * r % q
-#         while i < len(S) and S[i][0] != br:
-#             i += 1
-#         for j in xrange(i, M, q):
-#             A[j].append((r, q))
+    # Sieve with algebraic factor base
+    for (r, q) in algebraic:
+        i = 0
+        br = b * r % q
+        while i < len(S) and S[i][0] != br:
+            i += 1
+        for j in xrange(i, M, q):
+            A[j].append((r, q))
 
-#     # Sieve with quadratic factor base
-#     return U
+    # Sieve with quadratic factor base
+    return U
+
+    
+nfs(38423)
+
+
+
+
+
+

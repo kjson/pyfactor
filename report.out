@@ -4,9 +4,18 @@
 \BOOKMARK [2][-]{subsection.2.2}{Quadratic\040Sieve}{section.2}% 4
 \BOOKMARK [2][-]{subsection.2.3}{The\040Number\040Field\040Sieve}{section.2}% 5
 \BOOKMARK [3][-]{subsubsection.2.3.1}{Algebraic\040Intuition}{subsection.2.3}% 6
+<<<<<<< HEAD
+\BOOKMARK [3][-]{subsubsection.2.3.2}{Algorithm}{subsection.2.3}% 7
+\BOOKMARK [3][-]{subsubsection.2.3.3}{Implementation}{subsection.2.3}% 8
+\BOOKMARK [1][-]{section.3}{Shor's\040Quantum\040Algorithm}{}% 9
+\BOOKMARK [1][-]{section.4}{Conclusion}{}% 10
+\BOOKMARK [1][-]{section.5}{Theorems\040and\040Definitions}{}% 11
+\BOOKMARK [1][-]{section.6}{References}{}% 12
+=======
 \BOOKMARK [3][-]{subsubsection.2.3.2}{Procedure}{subsection.2.3}% 7
 \BOOKMARK [1][-]{section.3}{Shor's\040Quantum\040Algorithm}{}% 8
 \BOOKMARK [1][-]{section.4}{Conclusion}{}% 9
 \BOOKMARK [1][-]{section.5}{Implementation}{}% 10
 \BOOKMARK [1][-]{section.6}{Theorems\040and\040Definitions}{}% 11
 \BOOKMARK [1][-]{section.7}{References}{}% 12
+>>>>>>> 48501069da59935e41408009d1a1ccf947a6d8cf
