@@ -97,8 +97,10 @@ def irreducible(f):
     if f.eval(0) == 0:
         return False 
 
-    leading     = [1,-1] + lazy_factors(f.coeffs()[0]) + [-x for x in lazy_factors(f.coeffs()[0])]
-    constant    = lazy_factors(f.coeffs()[len(f.coeffs()) -1]) + [-x for x in lazy_factors(f.coeffs()[len(f.coeffs()) -1])]
+    leading     = [1,-1] + lazy_factors(f.coeffs()[0]) \
+        + [-x for x in lazy_factors(f.coeffs()[0])]
+    constant    = lazy_factors(f.coeffs()[len(f.coeffs()) -1]) \
+        + [-x for x in lazy_factors(f.coeffs()[len(f.coeffs()) -1])]
 
     for q in leading:
         for p in constant:
@@ -127,10 +129,11 @@ def nfs(N):
     else:
         d = 3.0
 
+    c = 0
     while True:
-        i = 0
+        
         # Calc m such that m^d = N
-        m = int(math.floor(N ** (1 / d))) + i
+        m = int(math.floor(N ** (1 / d))) + c
 
         # Coefficients in base-m rep of N
         coeffs = base_coeffs(m, N)
@@ -141,8 +144,10 @@ def nfs(N):
         for i in xrange(0, len(coeffs)):
             f += coeffs[i] * x ** i
 
+        print f, irreducible(f)
         if irreducible(f):
-            break
+            break 
+        c +=1 
 
     # Factor bases for sieving
     rational = primes_less_than(m)
@@ -171,7 +176,8 @@ def nfs(N):
     A = [[] for _ in S]
 
     # Matrix of all smooth pairs
-    U = np.zeros(shape=(len(rational)+len(algebraic)+len(quadratic)+2,len(rational)+len(algebraic)+len(quadratic)+1))
+    U = np.zeros(shape=(len(rational)+len(algebraic)+len(quadratic)+2, \
+        len(rational)+len(algebraic)+len(quadratic)+1))
 
     # Sieve with rational factor base
     for p in rational:
@@ -183,7 +189,6 @@ def nfs(N):
             l = 1
             while (S[i][0] + S[i][1] * m) % p ** (l + 1) == 0:
                 l += 1
-            R[j].append((p, l))
 
     # Sieve with algebraic factor base
     for (r, q) in algebraic:
@@ -192,14 +197,17 @@ def nfs(N):
         while i < len(S) and S[i][0] != br:
             i += 1
         for j in xrange(i, M, q):
-            A[j].append((r, q))
+            l = 1
+            print l
+            while S[i][0] != b*r % q**(l+1):
+                l += 1 
+            A[j].append((r, q, l))
 
     # Sieve with quadratic factor base
     return U
 
     
-nfs(38423)
-
+nfs(1476)
 
 
 

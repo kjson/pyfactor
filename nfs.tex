@@ -62,11 +62,13 @@ Let $N$ be a positive composite integer that is not a prime power. The general n
       &=(p_1^{f_1})^{e_1}(p_2^{f_2})^{e_2} \cdots (p_t^{f_t})^{e_t} \\
       &=p_1^{f_1 + e_1}p_2^{f_2 + e_2} \cdots p_t^{f_t + e_t}
     \end{align*}
-    for some (not necissarly destinct) primes $p_1, p_2, ..., p_t$ and possitive exponents $f_1,f_2,...,f_t$. Essentially, we have been able to relate questions about factorization in $\Z[\theta]$ to questions of factorization in $\Z$. The high level idea is to choose a set $\A$ of prime ideals in $\Z[\theta]$, called an "algebraic factor base" which we will use analogously to our factor base in the integers. The idea is to try an find pairs $(a,b)$ for which the element $a + b \theta$ has a principal ideal $\langle a+ b \theta \rangle$ that factors as the product of prime ideals which are in $\A$. We call this being smooth over $\A$. Two technical problems remains - storing representations of prime ideals in $\Z[\theta]$ on a computer and determining whether an algebraic element of $\Z[\theta]$ is a square. \\ 
+    for some (not necissarly destinct) primes $p_1, p_2, ..., p_t$ and possitive exponents $f_1,f_2,...,f_t$. Essentially, we have been able to relate questions about factorization in $\Z[\theta]$ to questions of factorization in $\Z$. The high level idea is to choose a set $\A$ of prime ideals in $\Z[\theta]$, called an "algebraic factor base" which we will use analogously to our factor base in the integers. The idea is to try an find pairs $(a,b)$ for which the element $a + b \theta$ has a principal ideal $\langle a+ b \theta \rangle$ that factors as the product of prime ideals which are in $\A$. We call this being smooth over $\A$. \\
+
+    Two technical problems remains - storing representations of prime ideals in $\Z[\theta]$ on a computer and determining whether an algebraic element of $\Z[\theta]$ is a square. \\ 
 
     The former can be overcome by only comprising one's factor base of prime ideals $\mathfrak{p}$ which satisfy $N(\mathfrak{p})=p$ for some prime $p$. One can show that these ideals, called "first degree prime ideals", are the only prime ideals apearing in the prime ideal factorization of a principal idea $\langle a + b \theta \rangle $ for coprime integers $a,b\in \Z$ in $\Z[\theta]$. What makes these types of ideals perfect for computing is that they are in natural bijection with the set of all pairs $(r,p)$ where $p$ is a prime and $r$ satisfying $f(r) \equiv 0$ mod $p$. Furthermore, there is a easy to check condition for determining whether a first degree prime ideal occurs in the ideal factorization of $\langle a + b \theta \rangle $. Specifically, a first degree prime ideal with representation $(r,p)$ occurs in the ideal factorization of an element $\langle a + b \theta \rangle $ if and only if $a \equiv -br $ mod $p$. To summarize, finding an element $\langle a + b \theta \rangle $ that is smooth over an algebraic factor base of first degree prime ideals of $\Z[\theta]$ amounts to finding an element $a + b \theta $ such that the integer $N(a + b \theta)$ factors completely over the primes occurring in the $(r,p)$ pairs corresponding to the first degree prime ideals in the algebraic factor base. \\
 
-    To determine whether 
+    To determine whether an element $\beta$ is a square in $\Z[\theta]$, 
 
 
 \subsubsection{Algorithm} \label{algo}
@@ -78,7 +80,6 @@ Let $N$ be a positive composite integer that is not a prime power. The general n
     \State \Return{$N$}
   \end{algorithmic} 
 \end{algorithm} 
-
 
 \subsubsection{Implementation}
 

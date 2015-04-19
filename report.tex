@@ -7,10 +7,9 @@
 \hypersetup{
   colorlinks,breaklinks,urlcolor=blue,linkcolor=black
 }
-% Unique to this document
-\theoremstyle{plain} 
-  \newtheorem{theorem}[subsection]{Theorem}
+% Unique to this document  
 \theoremstyle{definition}
+  \newtheorem{theorem}[subsection]{Theorem}
   \newtheorem{definition}[subsection]{Definition}
 \newcommand{\Q}{\mathbb{Q}} % rationals 
 \newcommand{\R}{\mathbb{R}} % reals 
@@ -26,16 +25,65 @@
 \usepackage{commath} % norms ! !!! 
 \setlength\parindent{0pt} % no indent
 
+% title 
+\newcommand*{\titleGP}{
+  \begingroup % Create the command for including the title page in the document
+  \centering % Center all text
+  \vspace*{\baselineskip} % White space at the top of the page
+
+  \rule{\textwidth}{1.6pt}\vspace*{-\baselineskip}\vspace*{2pt} % Thick horizontal line
+  \rule{\textwidth}{0.4pt}\\[\baselineskip] % Thin horizontal line
+
+  {\huge Integer Factorization}\\[0.2\baselineskip] % Title
+
+  \rule{\textwidth}{0.4pt}\vspace*{-\baselineskip}\vspace{3.2pt} % Thin horizontal line
+  \rule{\textwidth}{1.6pt}\\[\baselineskip] % Thick horizontal line
+
+  \scshape % Small caps
+  A comparison of two modern techniques: \\ % Tagline(s) or further description
+  The general number field sieve and \\
+  Shor's quantum algorithm  \\[\baselineskip] % Tagline(s) or further description
+  \today \par % Location and year
+
+  \vspace*{2\baselineskip} % Whitespace between location/year and editors
+
+  Prepared in fulfillment of the final course project for \\
+  CSI4105 - Design and Analysis of Algorithms II \\
+  by \\[\baselineskip]
+  {\Large Jafar Jahed \\ Saad Basif \\ Kevin Johnson \par} % Editor list
+
+  \vspace*{2\baselineskip} 
+
+  {\itshape The University of Ottawa \\ Faculty of Engineering \par} % Editor affiliation
+
+  \vfill % Whitespace between editor names and publisher logo
+  \endgroup
+}
+
+% end tittle 
+
 \begin{document}
+  \titleGP
+  \newpage
   \tableofcontents
+  \newpage
+
+  For the readers convenience, the letter $N$ will always be used to signify the integer desired to be factored. For brevity, a theorems and definitions section (\ref{theoremdef}) has been included. If a term appears in \textit{italics}, then the reader may consult section \ref{theoremdef} for further information.  
+
   \section{Factoring}
+    \input{factoring}
+    \newpage
   \section{The General Number Field Sieve}
     \input{nfs}
+    \newpage
   \section{Shor's Quantum Algorithm}
+    % \input{shor} 
   \section{Conclusion}
-  \section{Theorems and Definitions}
+    % \input{conclusion}
+  \section{Theorems and Definitions} \label{theoremdef}
     \input{thmdef}
   \section{References}
+    \input{references}
 \end{document}
 
 
