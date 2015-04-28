@@ -145,6 +145,7 @@ def lenstra_elliptic_curve_factor(N):
         if 4*a**3 - 27*b**2 ==0:
             next
 
+            
         # Initially double point 
         s = (3*x0**2 + a) 
         (x,y) = (s**2 - 2*x0, s*((s**2 - 2*x0) - x0) - y0)
