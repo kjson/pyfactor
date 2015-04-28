@@ -9,6 +9,11 @@
 \BOOKMARK [3][-]{subsubsection.2.3.2}{Algorithm}{subsection.2.3}% 9
 \BOOKMARK [3][-]{subsubsection.2.3.3}{Implementation}{subsection.2.3}% 10
 \BOOKMARK [1][-]{section.3}{Shor's\040Quantum\040Algorithm}{}% 11
-\BOOKMARK [1][-]{section.4}{Conclusion}{}% 12
-\BOOKMARK [1][-]{section.5}{Theorems\040and\040Definitions}{}% 13
-\BOOKMARK [1][-]{section.6}{References}{}% 14
+\BOOKMARK [2][-]{subsection.3.1}{Order\040Finding}{section.3}% 12
+\BOOKMARK [2][-]{subsection.3.2}{Phase\040Estimation}{section.3}% 13
+\BOOKMARK [2][-]{subsection.3.3}{Algorithm}{section.3}% 14
+\BOOKMARK [2][-]{subsection.3.4}{Complexity}{section.3}% 15
+\BOOKMARK [2][-]{subsection.3.5}{Downside}{section.3}% 16
+\BOOKMARK [1][-]{section.4}{Conclusion}{}% 17
+\BOOKMARK [1][-]{section.5}{Theorems\040and\040Definitions}{}% 18
+\BOOKMARK [1][-]{section.6}{References}{}% 19

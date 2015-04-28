@@ -1,8 +1,8 @@
 \begin{definition} \label{dedekind} %(\textit{Dedekind Domain})
-  Let $R$ be a ring that is not a field satisfying:
+  A Dedekind domain $D$ is a ring that is not a field satisfying:
   \begin{enumerate}
-    \item If $x,y \in R$, then $x \cdot y = y \cdot x$
-    \item For all $x,y \in R $, if $x\cdot y = 0$, then $x = 0 $ or $y = 0$
+    \item If $x,y \in D$, then $x \cdot y = y \cdot x$
+    \item For all $x,y \in D $, if $x\cdot y = 0$, then $x = 0 $ or $y = 0$
     \item Every nonzero proper ideal factors into prime ideals 
   \end{enumerate}
 \end{definition}
@@ -19,8 +19,9 @@
 \begin{theorem} \label{fun} (\textit{Fundamental Theorem of Algebra})
   Let $f \in \mathbb{C}[Z]$ be a non-constant polynomial.  Then there is a $z\in\mathbb{C}$ with $f(z)=0$.
 \end{theorem}
+
 \begin{proof}
-  Let C be the finite set of critical points of $f$. C is finite by elementary algebra. Remove from the codomain f(C) (and call the resulting open set B) and from the domain its inverse image (again finite) (and call the resulting open set A). Now you get an open map from A to B, which is also closed, because any polynomial is proper (inverse images of compact sets are compact). But B is connected and so $f$ is surjective.
+  Let C be the finite set of critical points of $f$. $C$ is finite by elementary algebra. Remove from the codomain $f(C)$ (and call the resulting open set $B$) and from the domain its inverse image (again finite) (and call the resulting open set $A$). Now you get an open map from $A$ to $B$, which is also closed, because any polynomial is proper (inverse images of compact sets are compact). But $B$ is connected and so $f$ is surjective.
 \end{proof}
 
 \begin{definition} \label{ideal} %(\textit{Ideal})

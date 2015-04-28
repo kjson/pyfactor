@@ -17,9 +17,11 @@
 \newcommand{\A}{\mathcal{A}} % algebraic factor base 
 \newcommand{\Rat}{\mathfrak{R}} % Rational factor base 
 \newcommand{\Quad}{\mathfrak{Q}}
+\newcommand{\ket}[2][]{\mathinner{\lvert#2\rangle}_{\hspace{-0.1em}#1}}
 \usepackage{minted} % Embedded python
 \usepackage{algorithmicx,algorithm,algpseudocode} % Algorithms package 
 \usepackage{mathtools}
+
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil} % Ceil
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}  % Floor
 \usepackage{commath} % norms ! !!! 
@@ -43,6 +45,7 @@
   A comparison of two modern techniques: \\ % Tagline(s) or further description
   The general number field sieve and \\
   Shor's quantum algorithm  \\[\baselineskip] % Tagline(s) or further description
+
   \today \par % Location and year
 
   \vspace*{2\baselineskip} % Whitespace between location/year and editors
@@ -50,7 +53,7 @@
   Prepared in fulfillment of the final course project for \\
   CSI4105 - Design and Analysis of Algorithms II \\
   by \\[\baselineskip]
-  {\Large Jafar Jahed \\ Saad Basif \\ Kevin Johnson \par} % Editor list
+  {\Large Jafar Zahed \\ Saad Basif \\ Kevin Johnson \par} % Editor list
 
   \vspace*{2\baselineskip} 
 
@@ -60,13 +63,30 @@
   \endgroup
 }
 
+\newcommand{\TODO}{
+  {\color{red} TODO;
+  \begin{enumerate}
+    \item (Done Fiday - Kevin) Formart all references, it's easiest to use the IEEE standard
+    \item Conclusion: Saad, just right your conclusion in the introduction.gdoc of google docs and KEvin will put it in the pdf 
+    \item (Done wednesday - Kevin) GNFS: Finish description in section \ref{intuition}. 
+    \item (Done wednesday - Kevin)GNFS: Input sudo code in section \ref{algo}, we might put the actual python if it looks ill 
+    \item (Done wendesnday - KEivn )SHORS: Format algorithm to match algorithm in GNFS 
+    \item (DONE WEDENSDAY) Input definitions for Shors 
+  \end{enumerate}
+}}
+
 % end tittle 
 
 \begin{document}
   \titleGP
+
+  \TODO
+
   \newpage
   \tableofcontents
   \newpage
+
+
 
   For the readers convenience, the letter $N$ will always be used to signify the integer desired to be factored. For brevity, a theorems and definitions section (\ref{theoremdef}) has been included. If a term appears in \textit{italics}, then the reader may consult section \ref{theoremdef} for further information.  
 
@@ -77,9 +97,9 @@
     \input{nfs}
     \newpage
   \section{Shor's Quantum Algorithm}
-    % \input{shor} 
+    \input{shor} 
   \section{Conclusion}
-    % \input{conclusion}
+    \input{conclusion}
   \section{Theorems and Definitions} \label{theoremdef}
     \input{thmdef}
   \section{References}
