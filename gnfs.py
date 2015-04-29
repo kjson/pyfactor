@@ -3,13 +3,11 @@ import random
 from fractions import gcd
 import sympy as sp
 import numpy as np 
+import theano as th 
+import pandas as pa 
 
 
-""" 
-The general number field sieve 
-Learn more here:
-http://scholar.lib.vt.edu/theses/public/etd-32298-93111/materials/etd.pdf
-"""
+""" The general number field sieve """
 	
 def base_coeffs(base,N):
 	""" The coefficients the base base expansion of N """
@@ -121,7 +119,9 @@ def lenstra_elliptic_curve_factor(N):
     """ Lenstra's elliptic curve factoring method """
 
     if N < 0:
-       return [-1] + lenstra_elliptic_curve_factor(-N)
+        return [-1] + lenstra_elliptic_curve_factor(-N)
+    if N == 0:
+        return [0]
 
     if N == 1:
         return [1] 
@@ -145,7 +145,6 @@ def lenstra_elliptic_curve_factor(N):
         if 4*a**3 - 27*b**2 ==0:
             next
 
-            
         # Initially double point 
         s = (3*x0**2 + a) 
         (x,y) = (s**2 - 2*x0, s*((s**2 - 2*x0) - x0) - y0)
@@ -155,8 +154,8 @@ def lenstra_elliptic_curve_factor(N):
             for i in xrange(0,math.factorial(k)):
                 d = gcd(x- x0,N)
                 if d != 1:
-                    return lenstra_elliptic_curve_factor(int(d)) \
-                    + lenstra_elliptic_curve_factor(int(N/d))
+                    return lenstra_elliptic_curve_factor(d) + \
+                    lenstra_elliptic_curve_factor(int(N/d))
                 else:
                     s = (y - y0) * modInv(x - x0,N)
                     x = s**2 - x - x0  
@@ -321,15 +320,6 @@ def gnfs(N):
                         U[number_of_smooths,len(rational)+len(algebraic)] = 1 
                     
                 number_of_smooths +=1
+                
+    np.Solve(U)
 
-        print U 
-
-
-        
-
-    
-    
-
-# 214211123132
-
-gnfs(21423132)

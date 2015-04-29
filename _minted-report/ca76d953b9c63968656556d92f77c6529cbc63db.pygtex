@@ -1,6 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
-\PYGdefault{c+cm}{/*}
-\PYGdefault{c+cm}{Here will be the python code.}
-\PYGdefault{c+cm}{use xelatex \PYGdefaultZhy{}shell\PYGdefaultZhy{}escape report.tex to compile}
-\PYGdefault{c+cm}{*/}
-\end{Verbatim}
