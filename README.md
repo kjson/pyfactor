@@ -1,7 +1,7 @@
 gnfspy
 =======
 
-The [General Number Field Sieve](http://en.wikipedia.org/wiki/General_number_field_sieve) in pure Python.
+STILL IN DEVELOPEMENT. The [General Number Field Sieve](http://en.wikipedia.org/wiki/General_number_field_sieve) in pure Python. 
 
 Idea 
 -----
