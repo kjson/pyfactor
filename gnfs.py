@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+""" The general number field sieve. """
+
 import math
 
 from fractions import gcd
@@ -5,9 +10,6 @@ from fractions import gcd
 import random as rn
 import sympy as sp
 import numpy as np
-
-
-""" The general number field sieve. """
 
 
 def base_coeffs(b, N):
